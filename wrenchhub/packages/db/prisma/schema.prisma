@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   // "car_owner" or "mechanic"
+  location  String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  vehicles        Vehicle[]
+  mechanicProfile MechanicProfile?
+
+  @@map("users")
+}
+
+model Vehicle {
+  id      String @id @default(cuid())
+  ownerId String @map("owner_id")
+  year    Int
+  make    String
+  model   String
+  mileage Int
+
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@map("vehicles")
+}
+
+model MechanicProfile {
+  id                String   @id @default(cuid())
+  userId            String   @unique @map("user_id")
+  businessName      String   @map("business_name")
+  location          String
+  latitude          Float?
+  longitude         Float?
+  serviceAreaRadius Int      @default(15) @map("service_area_radius")
+  serviceType       String   @default("shop") @map("service_type")
+  services          String[]
+  certifications    String[]
+  yearsExperience   Int      @default(0) @map("years_experience")
+  photos            String[]
+  profilePhoto      String?  @map("profile_photo")
+  coverPhoto        String?  @map("cover_photo")
+  verified          Boolean  @default(false)
+  about             String   @default("")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("mechanic_profiles")
+}
