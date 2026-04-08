@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WrenchHub — The Uber for Car Repairs</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1a1a2e;
+    line-height: 1.6;
+    background: #ffffff;
+  }
+
+  /* HERO SECTION */
+  .hero {
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 40%, #2d1b69 100%);
+    color: white;
+    padding: 80px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(255,107,53,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(78,205,196,0.08) 0%, transparent 50%);
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+
+  .logo {
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: -2px;
+    margin-bottom: 8px;
+  }
+
+  .logo .wrench { color: #ff6b35; }
+  .logo .hub { color: #4ecdc4; }
+
+  .tagline {
+    font-size: 22px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 24px;
+  }
+
+  .hero-description {
+    font-size: 16px;
+    color: rgba(255,255,255,0.6);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* MAIN CONTENT */
+  .content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* SECTION STYLES */
+  .section {
+    padding: 50px 0;
+    border-bottom: 1px solid #eef0f2;
+  }
+
+  .section:last-child { border-bottom: none; }
+
+  .section-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f0f23;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+  }
+
+  .section-subtitle {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 32px;
+    line-height: 1.7;
+  }
+
+  /* HOW IT WORKS - DUAL COLUMNS */
+  .dual-columns {
+    display: flex;
+    gap: 40px;
+  }
+
+  .column {
+    flex: 1;
+    background: #f8f9fb;
+    border-radius: 16px;
+    padding: 32px;
+  }
+
+  .column-header {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #0f0f23;
+  }
+
+  .column-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 20px;
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  .column.owner .column-label {
+    color: #ff6b35;
+    background: rgba(255,107,53,0.1);
+  }
+
+  .column.mechanic .column-label {
+    color: #4ecdc4;
+    background: rgba(78,205,196,0.1);
+  }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .step-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    color: white;
+  }
+
+  .column.owner .step-number { background: #ff6b35; }
+  .column.mechanic .step-number { background: #4ecdc4; }
+
+  .step-content h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .step-content p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  /* DIFFERENTIATORS TABLE */
+  .diff-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .diff-table th {
+    background: #0f0f23;
+    color: white;
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .diff-table th:last-child { color: #4ecdc4; }
+
+  .diff-table td {
+    padding: 14px 20px;
+    font-size: 14px;
+    border-bottom: 1px solid #eef0f2;
+  }
+
+  .diff-table tr:nth-child(even) td { background: #f8f9fb; }
+  .diff-table tr:last-child td { border-bottom: none; }
+
+  .diff-table td:first-child {
+    font-weight: 600;
+    color: #0f0f23;
+    width: 160px;
+  }
+
+  .diff-table td:nth-child(2) { color: #999; }
+
+  .diff-table td:last-child { color: #1a1a2e; }
+
+  /* MODES */
+  .modes {
+    display: flex;
+    gap: 24px;
+  }
+
+  .mode {
+    flex: 1;
+    border: 2px solid #eef0f2;
+    border-radius: 16px;
+    padding: 28px;
+    transition: border-color 0.2s;
+  }
+
+  .mode-number {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #999;
+    margin-bottom: 8px;
+  }
+
+  .mode h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .mode p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  .mode:first-child { border-color: #ff6b35; }
+  .mode:first-child h3 { color: #ff6b35; }
+
+  .mode:last-child { border-color: #4ecdc4; }
+  .mode:last-child h3 { color: #4ecdc4; }
+
+  /* VERIFICATION */
+  .tiers {
+    display: flex;
+    gap: 24px;
+  }
+
+  .tier {
+    flex: 1;
+    background: #f8f9fb;
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+  }
+
+  .tier-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 22px;
+  }
+
+  .tier.standard .tier-icon { background: #eef0f2; }
+  .tier.verified .tier-icon { background: rgba(78,205,196,0.15); }
+
+  .tier h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .tier p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  /* REVENUE */
+  .revenue-grid {
+    display: flex;
+    gap: 20px;
+  }
+
+  .revenue-card {
+    flex: 1;
+    border-radius: 16px;
+    padding: 28px;
+  }
+
+  .revenue-card.freemium {
+    background: linear-gradient(135deg, #0f0f23, #1a1a3e);
+    color: white;
+  }
+
+  .revenue-card.ads {
+    background: linear-gradient(135deg, #ff6b35, #ff8c42);
+    color: white;
+  }
+
+  .revenue-card.free {
+    background: linear-gradient(135deg, #4ecdc4, #45b7aa);
+    color: white;
+  }
+
+  .revenue-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .revenue-card p {
+    font-size: 13px;
+    opacity: 0.9;
+    line-height: 1.6;
+  }
+
+  /* LAUNCH MARKET */
+  .launch-box {
+    background: linear-gradient(135deg, #f8f9fb, #eef0f2);
+    border-radius: 16px;
+    padding: 36px;
+    text-align: center;
+  }
+
+  .launch-box h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .launch-box .regions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .region {
+    background: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  /* SERVICE TYPES */
+  .service-types {
+    display: flex;
+    gap: 20px;
+  }
+
+  .service-type {
+    flex: 1;
+    text-align: center;
+    padding: 24px;
+    background: #f8f9fb;
+    border-radius: 16px;
+  }
+
+  .service-type-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .service-type h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .service-type p {
+    font-size: 13px;
+    color: #666;
+  }
+
+  /* PHASES */
+  .phases {
+    display: flex;
+    gap: 24px;
+  }
+
+  .phase {
+    flex: 1;
+    border-radius: 16px;
+    padding: 28px;
+    border: 2px solid #eef0f2;
+  }
+
+  .phase.current {
+    border-color: #ff6b35;
+    background: rgba(255,107,53,0.02);
+  }
+
+  .phase-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+
+  .phase.current .phase-label { color: #ff6b35; }
+  .phase.future .phase-label { color: #999; }
+
+  .phase h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .phase ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .phase li {
+    font-size: 13px;
+    color: #555;
+    padding: 4px 0;
+    padding-left: 18px;
+    position: relative;
+  }
+
+  .phase li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+  }
+
+  .phase.current li::before { color: #ff6b35; }
+  .phase.future li::before { color: #ccc; }
+
+  /* FOOTER */
+  .footer {
+    background: #0f0f23;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 40px;
+    font-size: 14px;
+  }
+
+  .footer .logo-small {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section { page-break-inside: avoid; }
+    .hero { padding: 50px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="logo"><span class="wrench">Wrench</span><span class="hub">Hub</span></div>
+    <div class="tagline">The Uber for Car Repairs & Maintenance</div>
+    <p class="hero-description">A marketplace connecting car owners with mechanics through competitive bidding and direct discovery. Better prices. Trusted professionals. Total transparency.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- WHAT IS WRENCHHUB -->
+  <div class="section">
+    <h2 class="section-title">What Is WrenchHub?</h2>
+    <p class="section-subtitle">WrenchHub is a two-sided marketplace that eliminates the hassle of finding affordable, reliable auto repair. Car owners post what they need and mechanics compete to offer the best price — or car owners browse verified local mechanics and reach out directly. No more calling around for quotes. No more guessing who to trust.</p>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="section">
+    <h2 class="section-title">How It Works</h2>
+    <div class="dual-columns">
+      <div class="column owner">
+        <span class="column-label">Car Owners</span>
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Post a Job</h4>
+            <p>Describe what your car needs. Upload photos. AI helps if you're unsure what's wrong.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Get Competitive Bids</h4>
+            <p>Local mechanics submit sealed bids with full price breakdowns — parts, labor, and fees.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Pick Your Mechanic</h4>
+            <p>Compare bids, ratings, reviews, distance, and certifications. Message mechanics with questions.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Get It Fixed</h4>
+            <p>Accept a bid, schedule the work, and leave a review when it's done.</p>
+          </div>
+        </div>
+      </div>
+      <div class="column mechanic">
+        <span class="column-label">Mechanics</span>
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Create Your Profile</h4>
+            <p>Showcase your shop or mobile service with photos, certifications, and specialties.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Find Local Jobs</h4>
+            <p>Browse a feed of nearby repair and maintenance jobs filtered to your specialties.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Submit Bids</h4>
+            <p>Compete on price and quality with detailed quotes car owners can trust.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Build Your Reputation</h4>
+            <p>Earn reviews and ratings. Get verified to stand out from the competition.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT MAKES US DIFFERENT -->
+  <div class="section">
+    <h2 class="section-title">What Makes WrenchHub Different</h2>
+    <table class="diff-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Traditional Way</th>
+          <th>WrenchHub</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Getting Quotes</td>
+          <td>Call 5+ shops, explain the problem each time</td>
+          <td>Post once, get multiple competitive bids</td>
+        </tr>
+        <tr>
+          <td>Comparing Prices</td>
+          <td>No easy way to compare</td>
+          <td>Side-by-side bids with full breakdowns</td>
+        </tr>
+        <tr>
+          <td>Finding a Mechanic</td>
+          <td>Google/Yelp, hope for the best</td>
+          <td>Verified mechanics filtered by specialty & ratings</td>
+        </tr>
+        <tr>
+          <td>Trust</td>
+          <td>Word of mouth only</td>
+          <td>Verified profiles, reviews, certifications</td>
+        </tr>
+        <tr>
+          <td>Convenience</td>
+          <td>Drive to the shop</td>
+          <td>Mobile mechanics come to you</td>
+        </tr>
+        <tr>
+          <td>For Mechanics</td>
+          <td>Wait for walk-in customers</td>
+          <td>Proactively find jobs and grow your business</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TWO WAYS TO CONNECT -->
+  <div class="section">
+    <h2 class="section-title">Two Ways to Connect</h2>
+    <div class="modes">
+      <div class="mode">
+        <div class="mode-number">Mode 1</div>
+        <h3>Job Bidding</h3>
+        <p>Post a job describing what you need. Mechanics compete with sealed bids. Pick the best offer based on price, ratings, and reviews. Perfect when you want competitive pricing and multiple options.</p>
+      </div>
+      <div class="mode">
+        <div class="mode-number">Mode 2</div>
+        <h3>Browse & Contact</h3>
+        <p>Search for mechanics by specialty, location, and ratings. View their full profile and reach out directly via messaging. Perfect when you know what you need and want to find the right person fast.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERIFICATION -->
+  <div class="section">
+    <h2 class="section-title">Mechanic Verification</h2>
+    <div class="tiers">
+      <div class="tier standard">
+        <div class="tier-icon">&#128736;</div>
+        <h3>Standard</h3>
+        <p>Any mechanic can sign up and start connecting with customers immediately. Low barrier to entry means more options for car owners.</p>
+      </div>
+      <div class="tier verified">
+        <div class="tier-icon">&#9989;</div>
+        <h3>Verified</h3>
+        <p>Mechanics who submit business license, insurance, and certifications earn a Verified badge. Higher ranking in search results and more trust from car owners.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICE TYPES -->
+  <div class="section">
+    <h2 class="section-title">Mobile & Shop Mechanics</h2>
+    <p class="section-subtitle">Car owners choose the service style that works for them.</p>
+    <div class="service-types">
+      <div class="service-type">
+        <div class="service-type-icon">&#128664;</div>
+        <h3>Mobile Mechanic</h3>
+        <p>They come to your home, office, or wherever your car is</p>
+      </div>
+      <div class="service-type">
+        <div class="service-type-icon">&#127981;</div>
+        <h3>Shop-Based</h3>
+        <p>Bring your car to their location for the repair</p>
+      </div>
+      <div class="service-type">
+        <div class="service-type-icon">&#128256;</div>
+        <h3>No Preference</h3>
+        <p>See all available mechanics regardless of service type</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVENUE MODEL -->
+  <div class="section">
+    <h2 class="section-title">Revenue Model</h2>
+    <div class="revenue-grid">
+      <div class="revenue-card freemium">
+        <h3>Mechanic Subscriptions</h3>
+        <p>Free tier with limited bids. Pro tier ($29-49/mo) unlocks unlimited bids, featured placement, analytics, and early access to new jobs.</p>
+      </div>
+      <div class="revenue-card ads">
+        <h3>Advertising</h3>
+        <p>Non-intrusive, relevant ads from auto parts stores, dealerships, and insurance companies shown to car owners.</p>
+      </div>
+      <div class="revenue-card free">
+        <h3>Free for Car Owners</h3>
+        <p>Always. No fees, no subscriptions, no paywalls. Posting jobs, browsing, and messaging are completely free.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAUNCH MARKET -->
+  <div class="section">
+    <h2 class="section-title">Launch Market</h2>
+    <div class="launch-box">
+      <h3>Starting in South Florida</h3>
+      <p>Building density locally, proving the concept, then expanding.</p>
+      <div class="regions">
+        <div class="region">Miami-Dade</div>
+        <div class="region">Broward</div>
+        <div class="region">West Palm Beach</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROADMAP -->
+  <div class="section">
+    <h2 class="section-title">Roadmap</h2>
+    <div class="phases">
+      <div class="phase current">
+        <div class="phase-label">Phase 1 — MVP</div>
+        <h3>Web App Launch</h3>
+        <ul>
+          <li>Job posting with AI assistance</li>
+          <li>Sealed bidding with price breakdowns</li>
+          <li>Browse mechanics directory</li>
+          <li>Messaging with photo sharing</li>
+          <li>Reviews & ratings</li>
+          <li>Mechanic verification</li>
+        </ul>
+      </div>
+      <div class="phase future">
+        <div class="phase-label">Phase 2 — Growth</div>
+        <h3>Mobile + Monetization</h3>
+        <ul>
+          <li>iOS & Android apps</li>
+          <li>Pro tier subscriptions</li>
+          <li>Ads integration</li>
+          <li>Push notifications</li>
+          <li>Mechanic analytics dashboard</li>
+          <li>In-app payments</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="logo-small"><span class="wrench">Wrench</span><span class="hub">Hub</span></div>
+  <p>The smarter way to get your car fixed.</p>
+</div>
+
+</body>
+</html>

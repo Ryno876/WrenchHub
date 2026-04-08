@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm list:*)",
+      "Bash(npx md-to-pdf:*)",
+      "Bash(ls -la \"c:/APP Devolopment/docs/\"*.pdf)",
+      "Bash(winget install:*)"
+    ]
+  }
+}
