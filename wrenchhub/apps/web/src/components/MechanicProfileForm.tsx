@@ -18,6 +18,60 @@ const SERVICE_OPTIONS = [
   "Paint",
 ];
 
+const CERTIFICATION_OPTIONS = [
+  "ASE Certified",
+  "ASE Master Technician",
+  "EPA 608 Certified",
+  "Honda Specialist",
+  "Toyota Specialist",
+  "Ford Specialist",
+  "GM Specialist",
+  "BMW Specialist",
+  "Mercedes Specialist",
+  "Diesel Certified",
+  "Hybrid/EV Certified",
+  "I-CAR Certified",
+];
+
+const EXPERIENCE_OPTIONS = [
+  { value: 0, label: "Less than 1 year" },
+  { value: 1, label: "1 year" },
+  { value: 2, label: "2 years" },
+  { value: 3, label: "3 years" },
+  { value: 5, label: "5 years" },
+  { value: 7, label: "7 years" },
+  { value: 10, label: "10 years" },
+  { value: 15, label: "15 years" },
+  { value: 20, label: "20 years" },
+  { value: 25, label: "25+ years" },
+  { value: 30, label: "30+ years" },
+];
+
+const RADIUS_OPTIONS = [5, 10, 15, 20, 25, 30, 50, 75, 100];
+
+const LOCATION_OPTIONS = [
+  "Miami, FL",
+  "Fort Lauderdale, FL",
+  "West Palm Beach, FL",
+  "Hollywood, FL",
+  "Pembroke Pines, FL",
+  "Coral Springs, FL",
+  "Hialeah, FL",
+  "Boca Raton, FL",
+  "Deerfield Beach, FL",
+  "Pompano Beach, FL",
+  "Davie, FL",
+  "Plantation, FL",
+  "Sunrise, FL",
+  "Miramar, FL",
+  "Homestead, FL",
+  "Boynton Beach, FL",
+  "Delray Beach, FL",
+  "Doral, FL",
+  "Aventura, FL",
+  "Weston, FL",
+];
+
 interface Props {
   initialData?: MechanicProfile;
   onSubmit: (data: {
@@ -37,6 +91,7 @@ export function MechanicProfileForm({ initialData, onSubmit }: Props) {
     initialData?.businessName || ""
   );
   const [location, setLocation] = useState(initialData?.location || "");
+  const [customLocation, setCustomLocation] = useState("");
   const [serviceAreaRadius, setServiceAreaRadius] = useState(
     initialData?.serviceAreaRadius || 15
   );
@@ -46,8 +101,8 @@ export function MechanicProfileForm({ initialData, onSubmit }: Props) {
   const [services, setServices] = useState<string[]>(
     initialData?.services || []
   );
-  const [certifications, setCertifications] = useState(
-    initialData?.certifications?.join(", ") || ""
+  const [certifications, setCertifications] = useState<string[]>(
+    initialData?.certifications || []
   );
   const [yearsExperience, setYearsExperience] = useState(
     initialData?.yearsExperience || 0
@@ -62,6 +117,14 @@ export function MechanicProfileForm({ initialData, onSubmit }: Props) {
     );
   };
 
+  const toggleCertification = (c: string) => {
+    setCertifications((prev) =>
+      prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]
+    );
+  };
+
+  const showCustomLocation = location === "__other";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -69,14 +132,11 @@ export function MechanicProfileForm({ initialData, onSubmit }: Props) {
     try {
       await onSubmit({
         businessName,
-        location,
+        location: showCustomLocation ? customLocation : location,
         serviceAreaRadius,
         serviceType,
         services,
-        certifications: certifications
-          .split(",")
-          .map((c) => c.trim())
-          .filter(Boolean),
+        certifications,
         yearsExperience,
         about,
       });
@@ -113,27 +173,49 @@ export function MechanicProfileForm({ initialData, onSubmit }: Props) {
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Location
           </label>
-          <input
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Fort Lauderdale, FL"
-            className="w-full border rounded-lg px-4 py-2 text-sm"
-            required
-          />
+          <select
+            value={LOCATION_OPTIONS.includes(location) ? location : (location && location !== "__other" ? "__other" : location)}
+            onChange={(e) => {
+              setLocation(e.target.value);
+              if (e.target.value !== "__other") setCustomLocation("");
+            }}
+            className="w-full border rounded-lg px-4 py-2 text-sm bg-white"
+            required={!showCustomLocation}
+          >
+            <option value="">Select city...</option>
+            {LOCATION_OPTIONS.map((loc) => (
+              <option key={loc} value={loc}>
+                {loc}
+              </option>
+            ))}
+            <option value="__other">Other (type manually)</option>
+          </select>
+          {showCustomLocation && (
+            <input
+              type="text"
+              value={customLocation}
+              onChange={(e) => setCustomLocation(e.target.value)}
+              placeholder="Enter your city, state"
+              className="w-full border rounded-lg px-4 py-2 text-sm mt-2"
+              required
+            />
+          )}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Service Radius (miles)
+            Service Radius
           </label>
-          <input
-            type="number"
+          <select
             value={serviceAreaRadius}
             onChange={(e) => setServiceAreaRadius(Number(e.target.value))}
-            className="w-full border rounded-lg px-4 py-2 text-sm"
-            min={1}
-            max={100}
-          />
+            className="w-full border rounded-lg px-4 py-2 text-sm bg-white"
+          >
+            {RADIUS_OPTIONS.map((r) => (
+              <option key={r} value={r}>
+                {r} miles
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -181,30 +263,42 @@ export function MechanicProfileForm({ initialData, onSubmit }: Props) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Years of Experience
-          </label>
-          <input
-            type="number"
-            value={yearsExperience}
-            onChange={(e) => setYearsExperience(Number(e.target.value))}
-            className="w-full border rounded-lg px-4 py-2 text-sm"
-            min={0}
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Certifications (comma-separated)
-          </label>
-          <input
-            type="text"
-            value={certifications}
-            onChange={(e) => setCertifications(e.target.value)}
-            placeholder="ASE Certified, Honda Specialist"
-            className="w-full border rounded-lg px-4 py-2 text-sm"
-          />
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Years of Experience
+        </label>
+        <select
+          value={yearsExperience}
+          onChange={(e) => setYearsExperience(Number(e.target.value))}
+          className="w-full border rounded-lg px-4 py-2 text-sm bg-white"
+        >
+          {EXPERIENCE_OPTIONS.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Certifications
+        </label>
+        <div className="flex flex-wrap gap-2">
+          {CERTIFICATION_OPTIONS.map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => toggleCertification(c)}
+              className={`px-3 py-1.5 rounded-full text-sm border transition ${
+                certifications.includes(c)
+                  ? "bg-brand-orange text-white border-brand-orange"
+                  : "border-gray-300 text-gray-600"
+              }`}
+            >
+              {c}
+            </button>
+          ))}
         </div>
       </div>
 
