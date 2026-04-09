@@ -14,22 +14,22 @@ export function Navbar() {
       </Link>
 
       <div className="flex items-center gap-6 text-sm">
+        <Link href="/browse" className="hover:text-gray-300">
+          Browse Mechanics
+        </Link>
         {loading ? null : user ? (
           <>
             <Link href="/dashboard" className="hover:text-gray-300">
               Dashboard
             </Link>
             {user.role === "car_owner" && (
-              <Link href="/dashboard/vehicles" className="hover:text-gray-300">
-                My Vehicles
+              <Link href="/jobs/new" className="bg-brand-orange px-4 py-2 rounded-lg font-semibold hover:opacity-90">
+                Post a Job
               </Link>
             )}
             {user.role === "mechanic" && (
-              <Link
-                href="/mechanic/profile/edit"
-                className="hover:text-gray-300"
-              >
-                My Profile
+              <Link href="/mechanic/jobs" className="hover:text-gray-300">
+                Job Feed
               </Link>
             )}
             <button

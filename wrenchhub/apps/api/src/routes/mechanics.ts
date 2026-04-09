@@ -5,6 +5,33 @@ import { requireAuth, AuthRequest } from "../middleware/auth";
 
 const router = Router();
 
+// Public: browse/search mechanics
+router.get("/browse", async (req, res) => {
+  const { service, serviceType, location, verified, minRating } = req.query;
+
+  const where: Record<string, unknown> = {};
+
+  if (service) where.services = { has: service as string };
+  if (serviceType && serviceType !== "all") {
+    where.serviceType = { in: [serviceType as string, "both"] };
+  }
+  if (location) where.location = { contains: location as string, mode: "insensitive" };
+  if (verified === "true") where.verified = true;
+
+  const profiles = await prisma.mechanicProfile.findMany({
+    where,
+    include: {
+      user: { select: { name: true, createdAt: true } },
+    },
+    orderBy: [
+      { verified: "desc" },
+      { yearsExperience: "desc" },
+    ],
+  });
+
+  res.json(profiles);
+});
+
 // Authenticated: get own profile (must be before /:id)
 router.get("/profile", requireAuth, async (req: AuthRequest, res) => {
   const profile = await prisma.mechanicProfile.findUnique({

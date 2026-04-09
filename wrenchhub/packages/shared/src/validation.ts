@@ -45,7 +45,33 @@ export const mechanicProfileSchema = z.object({
   about: z.string().max(1000, "About must be under 1000 characters").default(""),
 });
 
+export const jobSchema = z.object({
+  vehicleId: z.string().min(1, "Vehicle is required"),
+  title: z.string().min(3, "Title must be at least 3 characters"),
+  description: z.string().min(10, "Description must be at least 10 characters"),
+  category: z.enum(["maintenance", "repair", "diagnostics", "body_work", "other"]),
+  subCategory: z.string().optional(),
+  photos: z.array(z.string()).default([]),
+  serviceTypePreference: z.enum(["mobile", "shop", "no_preference"]).default("no_preference"),
+  urgency: z.enum(["flexible", "within_a_week", "asap"]).default("flexible"),
+  location: z.string().min(2, "Location is required"),
+});
+
+export const bidSchema = z.object({
+  jobId: z.string().min(1, "Job ID is required"),
+  totalPrice: z.number().positive("Price must be greater than 0"),
+  partsBreakdown: z.string().min(1, "Parts breakdown is required"),
+  laborHours: z.number().min(0, "Labor hours cannot be negative"),
+  laborRate: z.number().positive("Labor rate must be greater than 0"),
+  fees: z.number().min(0, "Fees cannot be negative").default(0),
+  estimatedCompletionTime: z.string().min(1, "Estimated time is required"),
+  notes: z.string().default(""),
+  availability: z.string().default(""),
+});
+
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type VehicleInput = z.infer<typeof vehicleSchema>;
 export type MechanicProfileInput = z.infer<typeof mechanicProfileSchema>;
+export type JobInput = z.infer<typeof jobSchema>;
+export type BidInput = z.infer<typeof bidSchema>;
