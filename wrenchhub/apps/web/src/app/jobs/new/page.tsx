@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { apiFetch } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { PhotoUpload } from "@/components/PhotoUpload";
 import type { Vehicle } from "@wrenchhub/shared";
 
 const CATEGORIES = [
@@ -37,8 +38,53 @@ export default function NewJobPage() {
   const [serviceTypePreference, setServiceTypePreference] = useState("no_preference");
   const [urgency, setUrgency] = useState("flexible");
   const [location, setLocation] = useState(user?.location || "");
+  const [photos, setPhotos] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiSuggestion, setAiSuggestion] = useState<{
+    title: string;
+    description: string;
+    suggestedCategory: string;
+    keyDetails: string[];
+  } | null>(null);
+
+  const getVehicleInfo = () => {
+    const v = vehicles.find((v) => v.id === vehicleId);
+    return v ? `${v.year} ${v.make} ${v.model}` : "";
+  };
+
+  const handleAiAssist = async () => {
+    if (!description.trim()) return;
+    setAiLoading(true);
+    try {
+      const result = await apiFetch<{
+        title: string;
+        description: string;
+        suggestedCategory: string;
+        keyDetails: string[];
+      }>("/api/ai/assist-job", {
+        method: "POST",
+        body: JSON.stringify({
+          description,
+          category,
+          vehicleInfo: getVehicleInfo(),
+        }),
+      });
+      setAiSuggestion(result);
+    } catch {
+      // Silently fail — AI assist is optional
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  const applyAiSuggestion = () => {
+    if (!aiSuggestion) return;
+    setTitle(aiSuggestion.title);
+    setDescription(aiSuggestion.description);
+    setAiSuggestion(null);
+  };
 
   const { data: vehicles = [] } = useQuery({
     queryKey: ["vehicles"],
@@ -57,7 +103,7 @@ export default function NewJobPage() {
           description,
           category,
           subCategory: subCategory || undefined,
-          photos: [],
+          photos,
           serviceTypePreference,
           urgency,
           location,
@@ -194,7 +240,69 @@ export default function NewJobPage() {
                   placeholder="Describe the problem or what you need done..."
                   className="w-full border rounded-lg px-4 py-2 text-sm"
                 />
+                {description.trim().length >= 10 && !aiSuggestion && (
+                  <button
+                    type="button"
+                    onClick={handleAiAssist}
+                    disabled={aiLoading}
+                    className="mt-2 text-sm text-indigo-600 hover:text-indigo-700 font-medium disabled:opacity-50 flex items-center gap-1.5"
+                  >
+                    <span>&#129302;</span>
+                    {aiLoading ? "Analyzing..." : "AI: Help me describe this better"}
+                  </button>
+                )}
               </div>
+
+              {/* AI Suggestion */}
+              {aiSuggestion && (
+                <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-lg">&#129302;</span>
+                    <span className="font-bold text-sm text-indigo-700">AI Suggestion</span>
+                  </div>
+                  <div className="mb-2">
+                    <div className="text-xs text-gray-500">Suggested title:</div>
+                    <div className="font-semibold text-sm">{aiSuggestion.title}</div>
+                  </div>
+                  <div className="mb-2">
+                    <div className="text-xs text-gray-500">Improved description:</div>
+                    <div className="text-sm text-gray-700">{aiSuggestion.description}</div>
+                  </div>
+                  {aiSuggestion.keyDetails.length > 0 && (
+                    <div className="mb-3">
+                      <div className="text-xs text-gray-500">Key details for mechanics:</div>
+                      <ul className="text-sm text-gray-600 list-disc list-inside">
+                        {aiSuggestion.keyDetails.map((d, i) => (
+                          <li key={i}>{d}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={applyAiSuggestion}
+                      className="bg-indigo-600 text-white px-4 py-1.5 rounded-lg text-sm font-semibold"
+                    >
+                      Use Suggestion
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAiSuggestion(null)}
+                      className="text-sm text-gray-500 px-4 py-1.5"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <PhotoUpload
+                photos={photos}
+                onChange={setPhotos}
+                maxPhotos={5}
+                label="Photos of the issue"
+              />
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Service Preference</label>

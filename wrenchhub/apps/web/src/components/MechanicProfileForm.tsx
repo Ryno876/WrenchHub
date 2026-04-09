@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { MechanicProfile, ServiceType } from "@wrenchhub/shared";
+import { PhotoUpload } from "./PhotoUpload";
 
 const SERVICE_OPTIONS = [
   "Oil Change",
@@ -83,6 +84,8 @@ interface Props {
     certifications: string[];
     yearsExperience: number;
     about: string;
+    photos: string[];
+    profilePhoto: string | null;
   }) => Promise<void>;
 }
 
@@ -108,6 +111,10 @@ export function MechanicProfileForm({ initialData, onSubmit }: Props) {
     initialData?.yearsExperience || 0
   );
   const [about, setAbout] = useState(initialData?.about || "");
+  const [photos, setPhotos] = useState<string[]>(initialData?.photos || []);
+  const [profilePhoto, setProfilePhoto] = useState<string[]>(
+    initialData?.profilePhoto ? [initialData.profilePhoto] : []
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -138,6 +145,8 @@ export function MechanicProfileForm({ initialData, onSubmit }: Props) {
         services,
         certifications,
         yearsExperience,
+        photos,
+        profilePhoto: profilePhoto[0] || null,
         about,
       });
     } catch (err) {
@@ -315,6 +324,20 @@ export function MechanicProfileForm({ initialData, onSubmit }: Props) {
           placeholder="Tell car owners about your shop, experience, and what makes you different..."
         />
       </div>
+
+      <PhotoUpload
+        photos={profilePhoto}
+        onChange={setProfilePhoto}
+        maxPhotos={1}
+        label="Profile Photo"
+      />
+
+      <PhotoUpload
+        photos={photos}
+        onChange={setPhotos}
+        maxPhotos={10}
+        label="Shop / Work Photos"
+      />
 
       <button
         type="submit"

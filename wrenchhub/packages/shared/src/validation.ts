@@ -45,6 +45,8 @@ export const mechanicProfileSchema = z.object({
     .int()
     .min(0, "Years of experience cannot be negative"),
   about: z.string().max(1000, "About must be under 1000 characters").default(""),
+  photos: z.array(z.string()).default([]),
+  profilePhoto: z.string().nullable().default(null),
 });
 
 export const jobSchema = z.object({
