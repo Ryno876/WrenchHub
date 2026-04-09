@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { apiFetch } from "@/lib/api";
 
@@ -127,6 +128,13 @@ export default function BrowseMechanicsPage() {
                     ))}
                   </div>
                 )}
+
+                <Link
+                  href={`/mechanic/${m.id}`}
+                  className="block w-full text-center bg-brand-teal text-white py-2 rounded-lg text-sm font-semibold hover:opacity-90"
+                >
+                  View Profile
+                </Link>
               </div>
             ))}
           </div>

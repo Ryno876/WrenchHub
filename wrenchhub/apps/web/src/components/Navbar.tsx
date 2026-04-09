@@ -32,6 +32,9 @@ export function Navbar() {
                 Job Feed
               </Link>
             )}
+            <Link href="/messages" className="hover:text-gray-300">
+              Messages
+            </Link>
             <button
               onClick={logout}
               className="text-gray-400 hover:text-white"

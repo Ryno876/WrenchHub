@@ -6,6 +6,8 @@ import vehicleRoutes from "./routes/vehicles";
 import mechanicRoutes from "./routes/mechanics";
 import jobRoutes from "./routes/jobs";
 import bidRoutes from "./routes/bids";
+import conversationRoutes from "./routes/conversations";
+import reviewRoutes from "./routes/reviews";
 
 const app = express();
 
@@ -21,6 +23,8 @@ app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/mechanics", mechanicRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/bids", bidRoutes);
+app.use("/api/conversations", conversationRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 const PORT = process.env.PORT || 4000;
 
