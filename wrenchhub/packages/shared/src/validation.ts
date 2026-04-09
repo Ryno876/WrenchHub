@@ -14,6 +14,7 @@ export const loginSchema = z.object({
 });
 
 export const vehicleSchema = z.object({
+  vin: z.string().optional(),
   year: z
     .number()
     .int()
@@ -21,6 +22,7 @@ export const vehicleSchema = z.object({
     .max(new Date().getFullYear() + 1, "Year cannot be in the future"),
   make: z.string().min(1, "Make is required"),
   model: z.string().min(1, "Model is required"),
+  trim: z.string().optional(),
   mileage: z.number().int().min(0, "Mileage cannot be negative"),
 });
 

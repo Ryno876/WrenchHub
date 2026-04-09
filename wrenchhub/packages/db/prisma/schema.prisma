@@ -26,11 +26,13 @@ model User {
 }
 
 model Vehicle {
-  id      String @id @default(cuid())
-  ownerId String @map("owner_id")
+  id      String  @id @default(cuid())
+  ownerId String  @map("owner_id")
+  vin     String?
   year    Int
   make    String
   model   String
+  trim    String?
   mileage Int
 
   owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
