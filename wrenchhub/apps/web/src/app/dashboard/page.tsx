@@ -69,10 +69,10 @@ export default function DashboardPage() {
               <h3 className="font-bold text-lg mb-1">Job Feed</h3>
               <p className="text-sm text-white/80">Find jobs and place bids</p>
             </Link>
-            <div className="bg-white rounded-xl border p-6 opacity-50">
+            <Link href="/mechanic/bids" className="bg-white rounded-xl border p-6 hover:shadow-md transition">
               <h3 className="font-bold text-lg mb-1">My Bids</h3>
-              <p className="text-sm text-gray-500">Coming soon</p>
-            </div>
+              <p className="text-sm text-gray-500">Track your bid status</p>
+            </Link>
           </>
         )}
       </div>

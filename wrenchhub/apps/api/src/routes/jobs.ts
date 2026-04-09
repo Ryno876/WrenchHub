@@ -66,7 +66,7 @@ router.get("/:id", async (req, res) => {
               location: true,
             },
           },
-          mechanic: { select: { name: true } },
+          mechanic: { select: { id: true, name: true } },
         },
         orderBy: { totalPrice: "asc" },
       },
