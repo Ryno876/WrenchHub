@@ -2,6 +2,7 @@
   "name": "wrenchhub",
   "private": true,
   "scripts": {
+    "postinstall": "cd packages/db && npx prisma generate",
     "dev": "turbo dev",
     "build": "turbo build",
     "test": "turbo test",
