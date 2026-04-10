@@ -25,6 +25,7 @@ model User {
   sentMessages    Message[]      @relation("sender")
   conversations   ConversationParticipant[]
   reviewsGiven    Review[]       @relation("reviewer")
+  passwordResets  PasswordReset[]
 
   @@map("users")
 }
@@ -175,4 +176,17 @@ model Review {
 
   @@unique([jobId, reviewerId])
   @@map("reviews")
+}
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("password_resets")
 }

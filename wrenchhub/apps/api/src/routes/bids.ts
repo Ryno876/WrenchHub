@@ -2,6 +2,7 @@ import { Router } from "express";
 import { bidSchema } from "@wrenchhub/shared";
 import { prisma } from "../lib/prisma";
 import { requireAuth, AuthRequest } from "../middleware/auth";
+import { sendBidNotificationEmail } from "../lib/email";
 
 const router = Router();
 
@@ -74,6 +75,12 @@ router.post("/", async (req: AuthRequest, res) => {
   // Update job status to bidding if it was active
   if (job.status === "active") {
     await prisma.job.update({ where: { id: job.id }, data: { status: "bidding" } });
+  }
+
+  // Notify car owner about new bid
+  const jobOwner = await prisma.user.findUnique({ where: { id: job.ownerId } });
+  if (jobOwner) {
+    sendBidNotificationEmail(jobOwner.email, job.title, profile.businessName, bid.totalPrice);
   }
 
   res.status(201).json(bid);

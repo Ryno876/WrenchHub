@@ -2,6 +2,7 @@ import { Router } from "express";
 import { jobSchema } from "@wrenchhub/shared";
 import { prisma } from "../lib/prisma";
 import { requireAuth, AuthRequest } from "../middleware/auth";
+import { sendBidAcceptedEmail } from "../lib/email";
 
 const router = Router();
 
@@ -162,6 +163,7 @@ router.post("/:id/accept-bid", requireAuth, async (req: AuthRequest, res) => {
   const updated = await prisma.job.findUnique({
     where: { id: job.id },
     include: {
+      owner: { select: { name: true } },
       bids: {
         include: {
           mechanicProfile: {
@@ -171,6 +173,12 @@ router.post("/:id/accept-bid", requireAuth, async (req: AuthRequest, res) => {
       },
     },
   });
+
+  // Notify the winning mechanic
+  const mechanic = await prisma.user.findUnique({ where: { id: bid.mechanicId } });
+  if (mechanic && updated?.owner) {
+    sendBidAcceptedEmail(mechanic.email, job.title, updated.owner.name);
+  }
 
   res.json(updated);
 });

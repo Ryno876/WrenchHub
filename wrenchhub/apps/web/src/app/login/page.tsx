@@ -10,7 +10,12 @@ export default function LoginPage() {
           Sign in to your account
         </p>
         <AuthForm mode="login" />
-        <p className="text-center text-sm text-gray-500 mt-6">
+        <p className="text-center mt-4">
+          <Link href="/forgot-password" className="text-sm text-gray-500 hover:text-brand-orange">
+            Forgot your password?
+          </Link>
+        </p>
+        <p className="text-center text-sm text-gray-500 mt-4">
           Don&apos;t have an account?{" "}
           <Link href="/register" className="text-brand-orange font-semibold">
             Sign up free

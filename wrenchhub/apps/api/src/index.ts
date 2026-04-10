@@ -11,6 +11,7 @@ import reviewRoutes from "./routes/reviews";
 import uploadRoutes from "./routes/uploads";
 import aiRoutes from "./routes/ai";
 import adminRoutes from "./routes/admin";
+import passwordResetRoutes from "./routes/password-reset";
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/uploads", uploadRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/password-reset", passwordResetRoutes);
 
 const PORT = process.env.PORT || 4000;
 
