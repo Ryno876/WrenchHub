@@ -12,15 +12,15 @@ COPY wrenchhub/package.json wrenchhub/pnpm-workspace.yaml wrenchhub/pnpm-lock.ya
 COPY wrenchhub/packages/ packages/
 COPY wrenchhub/apps/api/ apps/api/
 
-# Install dependencies
+# Install ALL dependencies (not just production, we need tsx and types)
 RUN pnpm install --frozen-lockfile
 
 # Generate Prisma client
-RUN cd packages/db && npx prisma generate
+RUN cd packages/db && pnpm exec prisma generate
 
 EXPOSE 4000
 
 ENV NODE_ENV=production
 
-# Run migrations then start server
-CMD sh -c "cd packages/db && npx prisma migrate deploy && cd /app/wrenchhub && npx tsx apps/api/src/index.ts"
+# Run migrations then start server using project's tsx (not npx)
+CMD sh -c "cd packages/db && pnpm exec prisma migrate deploy && cd /app/wrenchhub && pnpm exec tsx apps/api/src/index.ts"
