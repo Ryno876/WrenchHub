@@ -1,7 +1,7 @@
 FROM node:22-slim
 
-# Install pnpm and openssl (needed by Prisma)
-RUN npm install -g pnpm@10 && apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+# Install pnpm, tsx globally, and openssl (needed by Prisma)
+RUN npm install -g pnpm@10 tsx && apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app/wrenchhub
 
@@ -12,15 +12,13 @@ COPY wrenchhub/package.json wrenchhub/pnpm-workspace.yaml wrenchhub/pnpm-lock.ya
 COPY wrenchhub/packages/ packages/
 COPY wrenchhub/apps/api/ apps/api/
 
-# Install ALL dependencies (not just production, we need tsx and types)
+# Install dependencies (no NODE_ENV yet so all deps install)
 RUN pnpm install --frozen-lockfile
 
 # Generate Prisma client
-RUN cd packages/db && pnpm exec prisma generate
+RUN cd packages/db && npx prisma generate
 
 EXPOSE 4000
 
-ENV NODE_ENV=production
-
-# Run migrations then start server using project's tsx (not npx)
-CMD sh -c "cd packages/db && pnpm exec prisma migrate deploy && cd /app/wrenchhub && pnpm exec tsx apps/api/src/index.ts"
+# Run migrations then start server
+CMD sh -c "cd packages/db && npx prisma migrate deploy && cd /app/wrenchhub && tsx apps/api/src/index.ts"
