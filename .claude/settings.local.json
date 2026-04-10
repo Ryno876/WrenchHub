@@ -4,7 +4,25 @@
       "Bash(npm list:*)",
       "Bash(npx md-to-pdf:*)",
       "Bash(ls -la \"c:/APP Devolopment/docs/\"*.pdf)",
-      "Bash(winget install:*)"
+      "Bash(winget install:*)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/GitHub CLI\")",
+      "Bash(gh auth:*)",
+      "Bash(gh repo:*)",
+      "Bash(pnpm --version)",
+      "Bash(psql --version)",
+      "Bash(git --version)",
+      "Bash(npm install:*)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/PostgreSQL/17/bin:/c/Program Files/PostgreSQL/16/bin\")",
+      "Bash(export PATH=\"$PATH:/c/Program Files/PostgreSQL/18/bin\")",
+      "Bash(PGPASSWORD=Tom909090 psql -U postgres -c \"CREATE DATABASE wrenchhub;\")",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(npx prisma:*)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm build:*)",
+      "WebFetch(domain:domainr.com)",
+      "WebFetch(domain:instantdomainsearch.com)",
+      "WebFetch(domain:rdap.verisign.com)"
     ]
   }
 }
