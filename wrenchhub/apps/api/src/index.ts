@@ -1,7 +1,6 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import path from "path";
 import authRoutes from "./routes/auth";
 import vehicleRoutes from "./routes/vehicles";
 import mechanicRoutes from "./routes/mechanics";
@@ -23,7 +22,7 @@ app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
 // Serve uploaded files
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use("/uploads", express.static(process.cwd() + "/uploads"));
 
 app.get("/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
