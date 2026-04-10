@@ -7,7 +7,7 @@ export default function LoginPage() {
       <div className="bg-white rounded-2xl shadow-sm border p-8 w-full max-w-md">
         <h1 className="text-2xl font-bold text-center mb-2">Welcome Back</h1>
         <p className="text-gray-500 text-center text-sm mb-6">
-          Sign in to your WrenchHub account
+          Sign in to your account
         </p>
         <AuthForm mode="login" />
         <p className="text-center text-sm text-gray-500 mt-6">

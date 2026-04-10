@@ -110,10 +110,10 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Why WrenchHub */}
+      {/* Why The Wrench Hub */}
       <div className="bg-white text-gray-900 py-16 md:py-24">
         <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12">Why WrenchHub?</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">Why The Wrench Hub?</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex gap-4 p-5 rounded-xl bg-gray-50">
               <div className="text-2xl">💰</div>
@@ -151,7 +151,7 @@ export default function HomePage() {
       <div className="bg-gradient-to-r from-brand-orange to-orange-600 py-16">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to get started?</h2>
-          <p className="text-white/80 mb-8">Join WrenchHub today. It&apos;s free for car owners — always.</p>
+          <p className="text-white/80 mb-8">Join The Wrench Hub today. It&apos;s free for car owners — always.</p>
           <Link href="/register" className="inline-block bg-white text-brand-orange px-8 py-3 rounded-lg font-semibold text-lg hover:opacity-90">
             Create Free Account
           </Link>
@@ -162,8 +162,9 @@ export default function HomePage() {
       <div className="bg-brand-dark py-8 border-t border-white/10">
         <div className="max-w-5xl mx-auto px-6 text-center">
           <div className="text-xl font-extrabold mb-2">
+            <span className="text-white">The </span>
             <span className="text-brand-orange">Wrench</span>
-            <span className="text-brand-teal">Hub</span>
+            <span className="text-brand-teal"> Hub</span>
           </div>
           <p className="text-gray-500 text-sm">The smarter way to get your car fixed.</p>
           <p className="text-gray-600 text-xs mt-4">Serving Miami-Dade, Broward, and West Palm Beach</p>

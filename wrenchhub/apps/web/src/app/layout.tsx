@@ -8,7 +8,7 @@ import { Navbar } from "@/components/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "WrenchHub — The Uber for Car Repairs",
+  title: "The Wrench Hub — The Uber for Car Repairs",
   description:
     "Post your car repair needs and get competitive bids from local mechanics.",
 };

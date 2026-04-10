@@ -12,8 +12,9 @@ export function Navbar() {
     <nav className="bg-brand-dark text-white px-6 py-3">
       <div className="flex items-center justify-between">
         <Link href="/" className="text-xl font-extrabold">
+          <span className="text-white">The </span>
           <span className="text-brand-orange">Wrench</span>
-          <span className="text-brand-teal">Hub</span>
+          <span className="text-brand-teal"> Hub</span>
         </Link>
 
         {/* Desktop nav */}

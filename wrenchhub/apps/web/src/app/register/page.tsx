@@ -6,7 +6,7 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="bg-white rounded-2xl shadow-sm border p-8 w-full max-w-md">
         <h1 className="text-2xl font-bold text-center mb-2">
-          Join WrenchHub
+          Join The Wrench Hub
         </h1>
         <p className="text-gray-500 text-center text-sm mb-6">
           Create your free account
