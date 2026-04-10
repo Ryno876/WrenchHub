@@ -97,7 +97,7 @@ router.get("/google", (req, res) => {
     return;
   }
 
-  const redirectUri = `${req.protocol}://${req.get("host")}/api/auth/google/callback`;
+  const redirectUri = `https://${req.get("host")}/api/auth/google/callback`;
 
   const params = new URLSearchParams({
     client_id: GOOGLE_CLIENT_ID,
@@ -120,7 +120,7 @@ router.get("/google/callback", async (req, res) => {
     return;
   }
 
-  const redirectUri = `${req.protocol}://${req.get("host")}/api/auth/google/callback`;
+  const redirectUri = `https://${req.get("host")}/api/auth/google/callback`;
 
   try {
     // Exchange code for tokens
