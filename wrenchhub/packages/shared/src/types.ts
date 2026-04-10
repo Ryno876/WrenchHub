@@ -26,6 +26,7 @@ export interface PublicUser {
   name: string;
   email: string;
   role: UserRole;
+  isAdmin: boolean;
   location: string | null;
   createdAt: string;
 }

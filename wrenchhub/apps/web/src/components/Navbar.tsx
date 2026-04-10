@@ -40,6 +40,11 @@ export function Navbar() {
               <Link href="/messages" className="hover:text-gray-300">
                 Messages
               </Link>
+              {user.isAdmin && (
+                <Link href="/admin" className="text-red-400 hover:text-red-300 font-semibold">
+                  Admin
+                </Link>
+              )}
               <button onClick={logout} className="text-gray-400 hover:text-white">
                 Sign Out
               </button>
@@ -104,6 +109,11 @@ export function Navbar() {
               <Link href="/messages" className="block hover:text-gray-300" onClick={() => setMenuOpen(false)}>
                 Messages
               </Link>
+              {user.isAdmin && (
+                <Link href="/admin" className="block text-red-400 font-semibold" onClick={() => setMenuOpen(false)}>
+                  Admin
+                </Link>
+              )}
               <button
                 onClick={() => { logout(); setMenuOpen(false); }}
                 className="block text-gray-400 hover:text-white"

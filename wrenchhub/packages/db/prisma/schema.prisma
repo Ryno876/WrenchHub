@@ -13,6 +13,7 @@ model User {
   password  String
   name      String
   role      String   // "car_owner" or "mechanic"
+  isAdmin   Boolean  @default(false) @map("is_admin")
   location  String?
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

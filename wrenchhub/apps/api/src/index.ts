@@ -10,6 +10,7 @@ import conversationRoutes from "./routes/conversations";
 import reviewRoutes from "./routes/reviews";
 import uploadRoutes from "./routes/uploads";
 import aiRoutes from "./routes/ai";
+import adminRoutes from "./routes/admin";
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.use("/api/conversations", conversationRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/uploads", uploadRoutes);
 app.use("/api/ai", aiRoutes);
+app.use("/api/admin", adminRoutes);
 
 const PORT = process.env.PORT || 4000;
 
